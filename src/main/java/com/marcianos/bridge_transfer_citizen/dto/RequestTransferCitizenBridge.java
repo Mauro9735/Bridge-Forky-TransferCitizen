@@ -14,6 +14,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestTransferCitizenBridge implements Serializable {
+    @JsonProperty("citizenId")
+    private long citizenId;
     @JsonProperty("operatorId")
     private String operatorId;
     @JsonProperty("operatorName")
