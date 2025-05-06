@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/v1/transfer")
+@RequestMapping("/v1/events/transfer")
 public class TransferCitizenBridgeController {
 
     private final TransferCitizenBridgeService transferCitizenBridgeService;
