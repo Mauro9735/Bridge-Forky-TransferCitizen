@@ -15,9 +15,7 @@ public class TransferCitizenBridgeService {
 
 
     public void sendTransferCitizenData(RequestTransferCitizenBridge requestTransferCitizenBridge) {
-        String exchangeName = "transfer_citizen_exchange";
-        String routingKey = "transfer_citizen_routing_key";
-        rabbitTemplate.convertAndSend(exchangeName, routingKey, requestTransferCitizenBridge);
+        rabbitTemplate.convertAndSend("transfer_citizen_queue", requestTransferCitizenBridge);
     }
 
 
