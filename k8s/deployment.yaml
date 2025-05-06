@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bridge-forky-transfer
+  labels:
+    app: bridge-forky-transfer
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bridge-forky-transfer
+  template:
+    metadata:
+      labels:
+        app: bridge-forky-transfer
+    spec:
+      containers:
+        - name: bridge-forky-transfer
+          image: mauro9735/bridge-forky-transfer:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          env:
+            - name: RABBITMQ_USER
+              value: marciano
+            - name: RABBITMQ_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: my-rabbitmq
+                  key: rabbitmq-password
+            - name: RABBITMQ_HOST
+              value: my-rabbitmq.rabbitmq-ns.svc.cluster.local
+            - name: RABBITMQ_PORT
+              value: "5672"
+          resources:
+            limits:
+              cpu: "50m"
+              memory: "100Mi"
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
