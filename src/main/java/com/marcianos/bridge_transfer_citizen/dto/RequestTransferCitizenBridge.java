@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -14,8 +15,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RequestTransferCitizenBridge implements Serializable {
-    @JsonProperty("citizenId")
-    private long citizenId;
+    @JsonProperty("id")
+    private UUID id;
     @JsonProperty("operatorId")
     private String operatorId;
     @JsonProperty("operatorName")
