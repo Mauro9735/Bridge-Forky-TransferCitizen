@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class TransferCitizenBridgeService {
@@ -21,7 +24,15 @@ public class TransferCitizenBridgeService {
     }
 
     public void sendTransferCitizenDataOperator(RequestTransferCitizenOperator requestTransferCitizenOperator) {
-        rabbitTemplate.convertAndSend("register-queue", requestTransferCitizenOperator);
+        if (requestTransferCitizenOperator.getUrlDocuments() != null && !requestTransferCitizenOperator.getUrlDocuments().isEmpty()) {
+            Map<String, String[]> updatedUrlDocuments = requestTransferCitizenOperator.getUrlDocuments().entrySet().stream()
+                    .collect(Collectors.toMap(
+                            entry -> entry.getKey().toLowerCase(),
+                            Map.Entry::getValue
+                    ));
+            requestTransferCitizenOperator.setUrlDocuments(updatedUrlDocuments);
+        }
+        rabbitTemplate.convertAndSend("register_transfer_citizen_queue", requestTransferCitizenOperator);
     }
 
     public void sendTransferCitizenDataOperatorConfirm(RequestTransferCitizenConfirm requestTransferCitizenConfirm) {
