@@ -25,7 +25,6 @@ public class TransferCitizenBridgeService {
     }
 
     public void sendTransferCitizenDataOperatorConfirm(RequestTransferCitizenConfirm requestTransferCitizenConfirm) {
-        rabbitTemplate.convertAndSend("delete_data_transferred_user_queue", requestTransferCitizenConfirm);
         rabbitTemplate.convertAndSend("delete_data_transferred_documents_queue", requestTransferCitizenConfirm);
     }
 
