@@ -5,6 +5,7 @@ package com.marcianos.bridge_transfer_citizen.service;
 import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenBridge;
 import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenConfirm;
 import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenOperator;
+import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenRabbit;
 import lombok.RequiredArgsConstructor;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,14 @@ public class TransferCitizenBridgeService {
     private final RabbitTemplate rabbitTemplate;
 
 
-    public void sendTransferCitizenData(RequestTransferCitizenBridge requestTransferCitizenBridge) {
-        rabbitTemplate.convertAndSend("transfer_citizen_queue", requestTransferCitizenBridge);
+    public void sendTransferCitizenData(String id,RequestTransferCitizenBridge requestTransferCitizenBridge) {
+        RequestTransferCitizenRabbit requestTransferCitizenRabbit = RequestTransferCitizenRabbit.builder()
+                .id(id)
+                .operatorId(requestTransferCitizenBridge.getOperatorId())
+                .operatorName(requestTransferCitizenBridge.getOperatorName())
+                .transferUrl(requestTransferCitizenBridge.getTransferUrl())
+                .build();
+        rabbitTemplate.convertAndSend("transfer_citizen_queue", requestTransferCitizenRabbit);
     }
 
     public void sendTransferCitizenDataOperator(RequestTransferCitizenOperator requestTransferCitizenOperator) {

@@ -5,21 +5,23 @@ import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenBridge;
 import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenConfirm;
 import com.marcianos.bridge_transfer_citizen.dto.RequestTransferCitizenOperator;
 import com.marcianos.bridge_transfer_citizen.service.TransferCitizenBridgeService;
+import com.marcianos.bridge_transfer_citizen.service.utils.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class TransferCitizenBridgeController {
 
     private final TransferCitizenBridgeService transferCitizenBridgeService;
+    private final JwtService jwtService;
 
     @PostMapping("/v1/events/transfer/citizen")
-    public String sendDataToRabbitMq(@RequestBody RequestTransferCitizenBridge requestTransferCitizenBridge) {
-        transferCitizenBridgeService.sendTransferCitizenData(requestTransferCitizenBridge);
+    public String sendDataToRabbitMq(@RequestHeader("Authorization") String authorizationHeader,
+                                     @RequestBody RequestTransferCitizenBridge requestTransferCitizenBridge) {
+
+        String id = jwtService.getUserId(authorizationHeader);
+        transferCitizenBridgeService.sendTransferCitizenData(id,requestTransferCitizenBridge);
         return "Data sent to RabbitMQ successfully!";
     }
 
