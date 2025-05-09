@@ -22,6 +22,6 @@ public class RequestTransferCitizenOperator {
     private String citizenEmail;
     @JsonProperty("urlDocuments")
     private Map<String,String[]> urlDocuments;
-    @JsonProperty("confirmApi")
-    private String confirmApi;
+    @JsonProperty("confirmAPI")
+    private String confirmAPI;
 }
